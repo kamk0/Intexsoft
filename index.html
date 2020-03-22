@@ -1,0 +1,142 @@
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <style>
+        body {
+            display: flex;
+            flex-wrap: wrap;
+                align-content: baseline;
+        }
+        .number {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            align-items: center;
+            width: 450px;
+            height: 420px;
+        }
+        .btn, .sign {
+            font-size: 36px;
+            width: 32%;
+            height: 100px;
+            margin-top: 5px
+        }
+        P {
+            font-size: 36px;
+            width: 100%;
+            height: 20px;
+        }
+    </style>
+    <p id="out">0</p>  
+
+    <div class="number">
+        <button class="btn">1</button>
+        <button class="btn">2</button>
+        <button class="btn">3</button>
+        <button class="btn">4</button>
+        <button class="btn">5</button>
+        <button class="btn">6</button>
+        <button class="btn">7</button>
+        <button class="btn">8</button>
+        <button class="btn">9</button>
+        <button class="btn">0</button>
+    </div>
+  
+    <div class="number">
+        <button class="sign operetion">+</button>
+        <button class="sign operetion">-</button>
+        <button class="sign operetion">*</button>
+        <button class="sign operetion">/</button>
+        <button id="result" class="operetion sign">=</button>
+        <button id="ce" class="sign">c</button>
+        <button id="percent" class="sign operetion">%</button>
+    </div>
+    <script>
+    let outputValues = document.getElementById('out'),
+        numberEntry = document.querySelectorAll('.btn'),
+        operationValue = document.querySelectorAll('.operetion'),
+        result = document.getElementById('result'),
+        fieldСleaning = document.getElementById('ce'),
+        interestTransaction = document.getElementById('.percent'),
+        currentNumber = '0',
+        NewNumber = false,
+        operationInProgress = '';
+    for (let i = 0; i < numberEntry.length; i++) {
+        numberEntry[i].addEventListener('click', function (e) {
+            numberPress(e.target.textContent);
+        });
+    }
+    for (let i = 0; i < operationValue.length; i++) {
+        operationValue[i].addEventListener('click', function (e) {
+            operationClick(e.target.textContent);
+        });
+    }
+    // dataInput(numberEntry);
+    // dataInput(operationValue);
+    // function dataInput(whereIsTheClick) {
+    //     for (let unit = 0; unit < whereIsTheClick.length; unit++) {
+    //         whereIsTheClick[unit].addEventListener('click', function (e) {
+    //             return operationClick(e.target.textContent);
+    //             console.log('sdas');
+                
+    //         });
+    //     }
+    // }
+    fieldСleaning.addEventListener('click', function (e) {
+        outputValues.innerHTML = '0';
+        NewNumber = true;
+        currentNumber = '0';
+        operationInProgress = '';
+    });
+    function numberPress(number) {
+        if (NewNumber) {
+            outputValues.innerHTML = number;
+            NewNumber = false;
+        } else {
+            if (outputValues.innerHTML === '0') {
+                outputValues.innerHTML = number;
+            } else {
+                outputValues.innerHTML += number;
+            }
+        }
+    };
+    function operationClick(op) {
+        localOperationMemory = +outputValues.innerHTML
+        if (NewNumber && operationInProgress !== '=') {
+            outputValues.innerHTML = currentNumber;
+        } else {
+            NewNumber = true;
+            switch (operationInProgress) {
+                case '+':
+                    currentNumber += localOperationMemory;
+                    break;
+                case '-':
+                    currentNumber -= localOperationMemory;
+                    break;
+                case '*':
+                    currentNumber *= localOperationMemory;
+                    break;
+                case '/':
+                    currentNumber /= localOperationMemory;
+                    break;
+                case '%':
+                    currentNumber = currentNumber / 100 * localOperationMemory;
+                    break;
+                case '*':
+                    currentNumber *= localOperationMemory;
+                    break;
+                default:
+                    currentNumber = localOperationMemory
+            }
+            outputValues.innerHTML = currentNumber;
+            operationInProgress = op;
+        }
+
+    };
+    </script>
+</body>
+</html>

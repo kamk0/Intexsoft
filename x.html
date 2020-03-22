@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<style>
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+    }
+    .block {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        width: 450px;
+    }
+    #block-two {
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background: #33333385;
+        width: 100%;
+        height: 100%;
+        top: 0;
+    }
+    .block-win {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .block div {
+        background: #e04b4b;
+        color: #fff;
+        font-size: 64px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 32%;
+        height: 150px;
+        margin-top: 5px;
+    }
+    #block-two span {
+        font-size: 60px;
+        font-weight: 600;
+        color: #fff;
+    }
+    #block-two a {
+        cursor: pointer;
+        background: #333;
+        color: #fff;
+        padding: 20px 50px;
+    }
+    #block-two a:hover {
+        background: #000;
+    }
+</style>
+    <div class="block">
+        <div onclick="add()" class="cell">x</div>
+        <div onclick="add()" class="cell">x</div>
+        <div onclick="add()" class="cell">x</div>
+        <div onclick="add()" class="cell">x</div>
+        <div onclick="add()" class="cell">x</div>
+        <div onclick="add()" class="cell">x</div>
+        <div onclick="add()" class="cell">x</div>
+        <div onclick="add()" class="cell">x</div>
+        <div onclick="add()" class="cell">x</div>
+    </div>
+    <div id="block-two">
+        <span id="winPlayer"></span>
+        <a  onclick="replay()">
+            Играть
+        </a>
+    </div>
+    <div class="block-win">
+        <p>Игрок X</p>
+        <p>Выйграл <span id="winSpanX">0</span> раз</p>
+    </div>
+    <div class="block-win">
+        <p>Игрок O</p>
+        <p>Выйграл <span id="winSpanO">0</span> раз</p>
+    </div>
+    <div class="block-win">
+        <p>Ничья</p>
+        <p><span id="winSpanDraw">0</span> раз</p>
+    </div>
+<script>
+    let winningCombinations = [
+        [0,1,2], [3,4,5], [6,7,8],
+        [0,3,6], [1,4,7], [2,5,8],
+        [0,4,8], [2,4,6]],
+        move = 0,
+        clickingOnTheCell = document.getElementsByClassName('cell'),
+        winnerX,
+        winnerO,    
+        winDraw;
+    proverka(winningCombinations)
+    console.log(winningCombinations[0][0]);
+    function proverka(x) {
+        for(let i = 0; i < x.length; i++){
+            for(let k = 0; k < x[i].length; k++) {
+                let str = x[i][k]
+                console.log(str);
+            }
+            
+        }  
+
+    }
+    writeLocalStorage('winX', winnerX, 'winSpanX', 0);
+    writeLocalStorage('winO', winnerO, 'winSpanO', 0);
+    writeLocalStorage('winD', winDraw, 'winSpanDraw', 0);
+
+    function writeLocalStorage(recordWhoWon, winCheck, writeToElement, value) {
+        if  ( localStorage.getItem(recordWhoWon) !== null ) {
+            winCheck = +(localStorage.getItem(recordWhoWon)) + value;
+            localStorage.setItem(recordWhoWon, winCheck);
+            document.getElementById(writeToElement).innerHTML = winCheck;
+        } else {
+            localStorage.setItem(recordWhoWon, value);
+        }
+    }
+
+    function modalOn(textWon) {
+            document.getElementById('winPlayer').innerHTML = textWon;
+            document.getElementById('block-two' ).style.display = 'flex';
+    }
+
+    function add() {
+        if ( !event.target.innerHTML.length) {
+            if (move % 2 == 0) {
+                event.target.innerHTML += 'X';
+            }else {
+                event.target.innerHTML += 'O';
+            }
+            winer();
+            move++;
+        }
+    }
+    
+    function winer() {
+        if ((clickingOnTheCell[0].innerText == 'X' && clickingOnTheCell[1].innerText == 'X' && clickingOnTheCell[2].innerText == 'X') || (clickingOnTheCell[0].innerText == 'O' && clickingOnTheCell[1].innerText == 'O' && clickingOnTheCell[2].innerText == 'O')) {
+            hoWin() 
+        } else if ((clickingOnTheCell[3].innerText == 'X' && clickingOnTheCell[4].innerText == 'X' && clickingOnTheCell[5].innerText == 'X') || (clickingOnTheCell[3].innerText == 'O' && clickingOnTheCell[4].innerText == 'O' && clickingOnTheCell[5].innerText == 'O')) {
+            hoWin() 
+        } else if ((clickingOnTheCell[6].innerText == 'X' && clickingOnTheCell[7].innerText == 'X' && clickingOnTheCell[8].innerText == 'X') || (clickingOnTheCell[6].innerText == 'O' && clickingOnTheCell[7].innerText == 'O' && clickingOnTheCell[8].innerText == 'O')) {
+            hoWin() 
+        } else if ((clickingOnTheCell[0].innerText == 'X' && clickingOnTheCell[3].innerText == 'X' && clickingOnTheCell[6].innerText == 'X') || (clickingOnTheCell[0].innerText == 'O' && clickingOnTheCell[3].innerText == 'O' && clickingOnTheCell[6].innerText == 'O')) {
+            hoWin() 
+        } else if ((clickingOnTheCell[1].innerText == 'X' && clickingOnTheCell[4].innerText == 'X' && clickingOnTheCell[7].innerText == 'X') || (clickingOnTheCell[1].innerText == 'O' && clickingOnTheCell[4].innerText == 'O' && clickingOnTheCell[7].innerText == 'O')) {
+            hoWin() 
+        } else if ((clickingOnTheCell[2].innerText == 'X' && clickingOnTheCell[5].innerText == 'X' && clickingOnTheCell[8].innerText == 'X') || (clickingOnTheCell[2].innerText == 'O' && clickingOnTheCell[5].innerText == 'O' && clickingOnTheCell[8].innerText == 'O')) {
+            hoWin() 
+        } else if ((clickingOnTheCell[0].innerText == 'X' && clickingOnTheCell[4].innerText == 'X' && clickingOnTheCell[8].innerText == 'X') || (clickingOnTheCell[0].innerText == 'O' && clickingOnTheCell[4].innerText == 'O' && clickingOnTheCell[8].innerText == 'O'))  {
+            hoWin() 
+        } else if ((clickingOnTheCell[2].innerText == 'X' && clickingOnTheCell[4].innerText == 'X' && clickingOnTheCell[6].innerText == 'X') || (clickingOnTheCell[2].innerText == 'O' && clickingOnTheCell[4].innerText == 'O' && clickingOnTheCell[6].innerText == 'O')) {
+            hoWin() 
+        } else if (move == 8){
+            drawWon()
+        }
+    }
+
+    function hoWin() {
+        if (move % 2 == 0) {
+            writeLocalStorage('winX', winnerX, 'winSpanX', 1);
+            modalOn('Выйграл игрок X')
+        } else {
+            writeLocalStorage('winO', winnerO, 'winSpanX', 1);
+             modalOn('Выйграл игрок O')
+        }
+    }
+
+    function drawWon() {
+        writeLocalStorage('winD', winDraw, 'winSpanDraw', 1);
+        modalOn('Ничья')
+    }
+
+    function replay() {
+        for ( let i = 0; i < clickingOnTheCell.length; ++i) {
+            clickingOnTheCell[i].innerHTML = ''
+        };
+        move = 0;
+        draw = 0;
+        document.getElementById('block-two').style.display='none';
+    }
+</script>
+</body>
+</html>
