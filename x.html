@@ -100,18 +100,7 @@
         winnerX,
         winnerO,    
         winDraw;
-    proverka(winningCombinations)
-    console.log(winningCombinations[0][0]);
-    function proverka(x) {
-        for(let i = 0; i < x.length; i++){
-            for(let k = 0; k < x[i].length; k++) {
-                let str = x[i][k]
-                console.log(str);
-            }
-            
-        }  
 
-    }
     writeLocalStorage('winX', winnerX, 'winSpanX', 0);
     writeLocalStorage('winO', winnerO, 'winSpanO', 0);
     writeLocalStorage('winD', winDraw, 'winSpanDraw', 0);
@@ -138,30 +127,20 @@
             }else {
                 event.target.innerHTML += 'O';
             }
+            winningСombination(winningCombinations, 'X')
+            winningСombination(winningCombinations, 'O')
             winer();
             move++;
         }
     }
     
-    function winer() {
-        if ((clickingOnTheCell[0].innerText == 'X' && clickingOnTheCell[1].innerText == 'X' && clickingOnTheCell[2].innerText == 'X') || (clickingOnTheCell[0].innerText == 'O' && clickingOnTheCell[1].innerText == 'O' && clickingOnTheCell[2].innerText == 'O')) {
-            hoWin() 
-        } else if ((clickingOnTheCell[3].innerText == 'X' && clickingOnTheCell[4].innerText == 'X' && clickingOnTheCell[5].innerText == 'X') || (clickingOnTheCell[3].innerText == 'O' && clickingOnTheCell[4].innerText == 'O' && clickingOnTheCell[5].innerText == 'O')) {
-            hoWin() 
-        } else if ((clickingOnTheCell[6].innerText == 'X' && clickingOnTheCell[7].innerText == 'X' && clickingOnTheCell[8].innerText == 'X') || (clickingOnTheCell[6].innerText == 'O' && clickingOnTheCell[7].innerText == 'O' && clickingOnTheCell[8].innerText == 'O')) {
-            hoWin() 
-        } else if ((clickingOnTheCell[0].innerText == 'X' && clickingOnTheCell[3].innerText == 'X' && clickingOnTheCell[6].innerText == 'X') || (clickingOnTheCell[0].innerText == 'O' && clickingOnTheCell[3].innerText == 'O' && clickingOnTheCell[6].innerText == 'O')) {
-            hoWin() 
-        } else if ((clickingOnTheCell[1].innerText == 'X' && clickingOnTheCell[4].innerText == 'X' && clickingOnTheCell[7].innerText == 'X') || (clickingOnTheCell[1].innerText == 'O' && clickingOnTheCell[4].innerText == 'O' && clickingOnTheCell[7].innerText == 'O')) {
-            hoWin() 
-        } else if ((clickingOnTheCell[2].innerText == 'X' && clickingOnTheCell[5].innerText == 'X' && clickingOnTheCell[8].innerText == 'X') || (clickingOnTheCell[2].innerText == 'O' && clickingOnTheCell[5].innerText == 'O' && clickingOnTheCell[8].innerText == 'O')) {
-            hoWin() 
-        } else if ((clickingOnTheCell[0].innerText == 'X' && clickingOnTheCell[4].innerText == 'X' && clickingOnTheCell[8].innerText == 'X') || (clickingOnTheCell[0].innerText == 'O' && clickingOnTheCell[4].innerText == 'O' && clickingOnTheCell[8].innerText == 'O'))  {
-            hoWin() 
-        } else if ((clickingOnTheCell[2].innerText == 'X' && clickingOnTheCell[4].innerText == 'X' && clickingOnTheCell[6].innerText == 'X') || (clickingOnTheCell[2].innerText == 'O' && clickingOnTheCell[4].innerText == 'O' && clickingOnTheCell[6].innerText == 'O')) {
-            hoWin() 
-        } else if (move == 8){
-            drawWon()
+    function winningСombination(arrayWithCombinations, player) {
+        for(let i = 0; i < arrayWithCombinations.length; i++){
+            if ((clickingOnTheCell[arrayWithCombinations[i][0]].innerText ==  player && clickingOnTheCell[arrayWithCombinations[i][1]].innerText ==  player && clickingOnTheCell[arrayWithCombinations[i][2]].innerText ==  player)) {
+                hoWin() 
+            } else if (move == 8){
+                drawWon()
+            }
         }
     }
 
